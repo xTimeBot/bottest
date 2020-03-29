@@ -211,6 +211,7 @@ client.on('message', message => {
  client.on('message', message => {
     let embed = new Discord.RichEmbed()
     .setTitle("Permissions error")
+    .setColor(colors.red)
     .setDescription("Sorry, but you dont have permissions to \`BAN_MEMBERS\`")
     let args = message.content.substring((config.prefix).lenght).split(" ");
     if(message.content.startsWith(config.prefix + 'ban')) {
