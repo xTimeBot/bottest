@@ -612,4 +612,4 @@ client.on('message', message => {
     }
 })
 
-client.login("NjkwMjQxNjQwMDI3MjU4ODg3.XnOmig.qPOj94va6VMpPiJlQGgvJbh5Lz0");
+client.login(process.env.token_bot);
