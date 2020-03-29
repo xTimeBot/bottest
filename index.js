@@ -4,7 +4,7 @@ const config = require('./config.json');
 const colors = require('./colors.json');
 
 client.on('ready', async() => {
-    server = 1;
+    let server = 1;
     if(client.guilds.size = server) {
         client.user.setActivity(`v ${config.version}| ${config.prefix}help | in ${client.guilds.size} server`)
     } else {
@@ -606,9 +606,8 @@ client.on('message', message => {
 })
 client.on('message', message => {
     if(message.content.startsWith('test')) {
-        if(!message.author.id === config.onwer) return member.send("Permissions error!") 
-        let args = message.content.substring((config.prefix).lenght).split(" ");
-            
+        if(!message.author.id === config.onwer) return member.send("You are not bot owner Бип-буп!") 
+        message.channel.send(`Hello <@${config.owner}> owner!`)
     }
 })
 
