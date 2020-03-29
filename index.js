@@ -604,9 +604,11 @@ client.on('message', message => {
 })
 client.on('message', message => {
     if(message.content.startsWith('test')) {
-        if(message.author.id === config.onwer) return member.send("You are not bot owner Бип-буп!") 
-        message.channel.send(`Hello <@${config.owner}> owner!`)
-    }
+        if(message.author.id != config.onwer) return member.send("You are not bot owner Бип-буп!") 
+        
+if(message.author.id === config.owner) {message.channel.send(`Hello <@${config.owner}> owner!`)
+                                       }    
+}
 })
 
 client.login(process.env.token_bot);
