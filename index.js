@@ -4,12 +4,8 @@ const config = require('./config.json');
 const colors = require('./colors.json');
 
 client.on('ready', async() => {
-    let server = 1;
-    if(client.guilds.size = server) {
-        client.user.setActivity(`v ${config.version}| ${config.prefix}help | in ${client.guilds.size} server`)
-    } else {
         client.user.setActivity(`v ${config.version}| ${config.prefix}help | in ${client.guilds.size} servers`)
-    }
+        client.user.setStatus("idle")
     console.log(`${client.user.username} has connected`);
 })
 client.on('message', message => {
@@ -575,7 +571,9 @@ client.on('message', message => {
     .setImage(user.avatarURL)
     .addField("Game :", user.presence.game ? user.presence.game.name : "Game : none")
     .addField("Created at ", moment.utc(user.createdAt).format("MMMM Do YYYY, h:mm a"))
-    message.channel.send(embed); return
+    message.channel.send(embed).then(() => {
+            message.delete(100)
+        }); return
     }
     if(user) {
         let userinfo = new Discord.RichEmbed()
