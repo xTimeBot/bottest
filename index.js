@@ -123,7 +123,7 @@ client.on('message', message =>{
     .setTimestamp()
     switch(args[0]) {
         case `${config.prefix}vote`:
-            if(!message.member.hasPermission("EMBED_LINKS")) return message.channel.send(embedsdd).then(msg => {msg.delete(10000), message.delete(1000)})
+            if(!message.member.hasPermission("MANAGE_WEBHOOKS")) return message.channel.send(embedsdd).then(msg => {msg.delete(10000), message.delete(1000)})
             if(!args[1]) return message.channel.send(embedd);
             if(args[2]) { let embed = new Discord.RichEmbed()
             .setTimestamp()
