@@ -3,11 +3,25 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const colors = require('./colors.json');
 
-client.on('ready', async() => {
-        client.user.setActivity(`v ${config.version}| ${config.prefix}help | in ${client.guilds.size} servers`)
-        client.user.setStatus("idle")
-    console.log(`${client.user.username} has connected`);
-})
+client.on("ready", () => {
+  // This event will run if the bot starts, and logs in, successfully.
+  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+  // Example of changing the bot's playing game to something useful. `client.user` is what the
+  // docs refer to as the "ClientUser".
+  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+});
+
+client.on("guildCreate", guild => {
+  // This event triggers when the bot joins a guild.
+  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+});
+
+client.on("guildDelete", guild => {
+  // this event triggers when the bot is removed from a guild.
+  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+});
 client.on('message', message => {
     if(message.content === 'adminmsg'){
         let embed = new Discord.RichEmbed()
@@ -603,6 +617,24 @@ client.on('message', message => {
     }
 }
 })
-
-
+client.on('message', message => { 
+if(message.author.bot) return;
+ if(message.content.indexOf(config.prefix) !== 0) return;
+    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+  const command = args.shift().toLowerCase();
+if(command === "say") {
+    // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
+    // To get the "message" itself we join the `args` back into a string with spaces: 
+    const sayMessage = args.join(" ");
+    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+    message.delete().catch(O_o=>{}); 
+    // And we get the bot to say the thing: 
+        let embed = new Discord.RichEmbed()
+        .setColor(colors.yellow)
+        .setDescription(sayMessage)
+    message.channel.send(embed).then(()=> {
+    message.delete()
+})
+  }
+})
 client.login(process.env.token_bot);
