@@ -4,37 +4,24 @@ const config = require('./config.json');
 const colors = require('./colors.json');
 
 client.on("ready", () => {
-  // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
-  // Example of changing the bot's playing game to something useful. `client.user` is what the
-  // docs refer to as the "ClientUser".
-  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
-});
-
-client.on("guildCreate", guild => {
-  // This event triggers when the bot joins a guild.
-  console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
-});
-
-client.on("guildDelete", guild => {
-  // this event triggers when the bot is removed from a guild.
-  console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
-});
-client.on('message', message => {
-    if(message.content === 'adminmsg'){
-        let embed = new Discord.RichEmbed()
-    .setColor("#b303ff")
-    .setTitle("Member joined")  
-    .setDescription(`Hello&Welcome ${message.member.user.username} to the server ${message.member.guild.name} <a:eyes_new:692686292038713364>`)
-    message.member.send(embed).then(msg => {
-        msg.react("🔴")
-        msg.delete(300000)
-    })
-    }
-})
-
+    // This event will run if the bot starts, and logs in, successfully.
+    console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+    // Example of changing the bot's playing game to something useful. `client.user` is what the
+    // docs refer to as the "ClientUser".
+    client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+  });
+  
+  client.on("guildCreate", guild => {
+    // This event triggers when the bot joins a guild.
+    console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
+    client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+  });
+  
+  client.on("guildDelete", guild => {
+    // this event triggers when the bot is removed from a guild.
+    console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
+    client.user.setActivity(`v ${config.version} | ${config.prefix}help | ${client.guilds.size} servers`);
+  });
 client.on('message', message => {
 
     if (message.author.bot) return;
@@ -60,14 +47,13 @@ client.on('message', message => {
         .setColor("#fc6b03")
         .setTitle("**Choose error!**")
         .setDescription(`Please play with one of these responses: \`rock⚫, paper⬜, scissors✂️\`\n**Example :\`${config.prefix}rps rock\`**`)
-        .setImage('https://cdn.discordapp.com/attachments/689545317485641773/692029484567756800/08102143-Rock-Paper-Scissors.png')
         .setTimestamp()
         let replies = ['rock', 'paper', 'scissors'];
         let result = Math.floor((Math.random() * replies.length));
 
         let uReply = args[0];
         if (!uReply) return message.channel.send(embed).then(msg => {msg.react("🔴", 3000);msg.delete(20000); message.delete(5000)})
-        if (!replies.includes(uReply)) return message.channel.send(`Only these responses are accepted: \`rock⚫, paper⬜, scissors✂️\`\n**Example :\`${config.prefix}rps rock\`**`).then(msg => {msg.react("🔴", 3000);msg.delete(10000);message.delete()})
+        if (!replies.includes(uReply)) return message.channel.send(embed).then(msg => {msg.delete(10000);message.delete()})
         if (replies[result] === uReply) {
             message.channel.send(`Bot choosed : ${replies[result]}`)
             return message.channel.send(embedsds);
@@ -102,7 +88,7 @@ client.on('message', message =>{
     if(message.channel.type === "dm") return;
     let embedsd = new Discord.RichEmbed()
     .setColor("#03ff07")
-    .setDescription("<:meesage_delete:692686289220403292> Successfully deleted")
+    .setDescription("Successfully deleted")
     .setTimestamp()
     let embedsdsd = new Discord.RichEmbed()
     .setColor("#fc0303")
@@ -125,46 +111,7 @@ client.on('message', message =>{
              message.channel.send(embedsd).then(msg =>{
              msg.delete(10000);
          })
-    }let embedd = new Discord.RichEmbed()
-    .setColor("#fc0303")
-    .setTitle("Command format error")
-    .setDescription("Please provide a words \`Min: 2; Max 3\`")
-    .setTimestamp()
-    let embedsdd = new Discord.RichEmbed()
-    .setColor(colors.red)
-    .setTitle("Permissions error")
-    .setDescription("You dont have permissions \`EMBED_LINKS\` to do it!")
-    .setTimestamp()
-    switch(args[0]) {
-        case `${config.prefix}vote`:
-            if(!message.member.hasPermission("MANAGE_WEBHOOKS")) return message.channel.send(embedsdd).then(msg => {msg.delete(10000), message.delete(1000)})
-            if(!args[1]) return message.channel.send(embedd);
-            if(args[2]) { let embed = new Discord.RichEmbed()
-            .setTimestamp()
-            .setTitle("Vote table")
-            .setAuthor(message.author.tag, message.author.avatarURL)
-            .setDescription(`${args[1]} - 1️⃣ vs ${args[2]} - 2️⃣`)
-            message.delete()
-            message.channel.send(embed).then(mssg =>{
-                mssg.react("1️⃣")
-                mssg.react("2️⃣")
-                if(args[3]){mssg.delete()}
-            })
-            }
-                if(args[3]) {
-                    let embeds = new Discord.RichEmbed()
-                    .setTimestamp()
-                    .setTitle("**Vote Table**")
-                    .setAuthor(message.author.tag, message.author.avatarURL)
-                    .setDescription(`${args[1]} - 1️⃣ vs ${args[2]} - 2️⃣ vs ${args[3]} - 3️⃣`)
-                    message.channel.send(embeds).then(mssgg =>{
-                        mssgg.react("1️⃣")
-                        mssgg.react("2️⃣")
-                        mssgg.react("3️⃣")
-                        }
-                    ) 
-            }
-        }
+    }
 })
 client.on('message', message => {
     let args = message.content.substring((config.prefix).lenght).split(" ");
@@ -225,8 +172,8 @@ client.on('message', message => {
  client.on('message', message => {
     let embed = new Discord.RichEmbed()
     .setTitle("Permissions error")
-    .setColor(colors.red)
     .setDescription("Sorry, but you dont have permissions to \`BAN_MEMBERS\`")
+    .setColor(colors.red)
     let args = message.content.substring((config.prefix).lenght).split(" ");
     if(message.content.startsWith(config.prefix + 'ban')) {
     if(!message.guild) return;
@@ -287,15 +234,12 @@ client.on('message', message => {
   })
 
 client.on('message', message => {
-    if(message.author.bot) return;
-    function ucFirst(str) {
-        if (!str) return str;
-      
-        return str[0].toUpperCase() + str.slice(1);
-      }
-      let reg = ucFirst(message.guild.region)
-    
+    if(message.content.type == 'dm') return member.send("Error")
     if(message.content.startsWith(`${config.prefix}serverinfo`)){
+    if(message.author.bot) return;
+      if(!message.guild) {
+          return }
+          else {
         let embed = new Discord.RichEmbed()
         .setColor(colors.yellow)
         .setAuthor(message.author.username, message.author.displayAvatarURL)
@@ -306,36 +250,30 @@ client.on('message', message => {
         .addField("**Member count:**", `${message.guild.memberCount}`, true)
         .addField("**Role count:**", `${message.guild.roles.size}`, true)
         .addField("**Emoji count:**", message.guild.emojis.size)
-        .addField("**Region:**", reg, true)
+        .addField("**Region:**", message.guild.region, true)
         .addField("**Verification level:**", message.guild.verificationLevel, true)
         .addField("**Created:**", moment.utc(message.guild.createdAt).format("MMMM Do YYYY, h:mm a"))
         .setThumbnail(message.guild.iconURL)
-        .setFooter(`AdventureBot @2020`, client.user.displayAvatarURL)
+        .setFooter(`Generated For ${message.member.user.username}`, message.author.avatarURL)
         message.channel.send(embed)
-    }
+      }
+}
     
-})
+})  
 client.on('message', async message => {
     if(message.content === `${config.prefix}help`){
         let embed = new Discord.RichEmbed()
-        .setColor(colors.pink)
-        .setAuthor(message.author.username)
-        .setTitle("Help Command <a:true:692691077311889458>")
-        .setDescription(`1 - \`${config.prefix}serverinfo\` - show the server information
-                        \n 2 - \`${config.prefix}help\` - help command
-                        \n3 - \`${config.prefix}ping\` - check ping of bot
-                        \n4 - \`${config.prefix}userinfo\` - show user information
-                        \n 5 - \`${config.prefix}clear\` - clear a provided number message
-                        \n 6 - \`${config.prefix}vote\` - make vote table 
-                        \n 7 - \`${config.prefix}kick\` - kick the mentioned user
-                        \n Example : \`${config.prefix}kick @User#0000 broked_the_rules\`
-                        \n 8 - \`${config.prefix}ban\` - ban mentioned user
-                        \n Example : \`${config.prefix}ban @User#0000 broked_the_server\`
-                        \n 9 - \`${config.prefix}bot\` - bot information, also you can add him to your server , and bot server!
-                        \n 10 - \`${config.prefix}rps\` - fun game!
-                        \n 11 - \`${config.prefix}create-role\` - you can instant create role! It useful command.
-                        \n Example : \`${config.prefix}create-role Example_Role Default Default 2\`
-                        \n**Coming soon - \`Fun games, Mute, Un-ban\`**`)
+        .setTitle("Command list")
+        .setColor(colors.cyan)
+        .addField("Prefix:", `${config.prefix}`)
+        .addField("Finn[BOT]", `${config.version}`)
+        .addField("information", "\`serverinfo\`, \`userinfo\`, \`bot\`, \`ping\`")
+        .addField("Moderation", "\`clear\`, \`kick\`, \`ban\`, \`create-role\`")
+        .addField("Fun", "\`vote\`, \`say\`, \`rps\`")
+        .addField("Support", '[Join our support](https://discord.gg/4CN39jM)')
+        .addField("Add Finn[BOT]", '[Add FInn[BOT] to your server](https://discordapp.com/api/oauth2/authorize?client_id=690241640027258887&permissions=8&scope=bot)')
+        .setFooter(`Generated For ${message.member.user.username}`, message.author.avatarURL)
+        .setTimestamp()
         message.channel.send(embed)
     }
 })
@@ -350,8 +288,8 @@ client.on('message', message => {
         .addField("**Prefix :**", config.prefix)
         .addField("**Owner of bot:**", "xTime#1927")
         .addField("**Help command:**", `${config.prefix}help`)
-        .addField("**Bot Server :**", "[**CLICK HERE**](https://discord.gg/4CN39jM)")
-        .addField("**Bot link:**", "[**CLICK HERE**](https://discordapp.com/api/oauth2/authorize?client_id=690241640027258887&permissions=8&scope=bot)")
+        .addField("**Bot Server :**", "[**Click here**](https://discord.gg/4CN39jM)")
+        .addField("**Bot link:**", "[**Click here**](https://discordapp.com/api/oauth2/authorize?client_id=690241640027258887&permissions=8&scope=bot)")
         message.channel.send(embed)
     }
 })
@@ -361,7 +299,6 @@ client.on('guildMemberAdd', member => {
     .setTitle("Member joined")  
     .setDescription(`Hello&Welcome ${member.user.username} to the server ${member.guild.name} <a:eyes_new:692686292038713364>`)
     member.send(embed).then(msg => {
-        msg.react("🔴")
         msg.delete(300000)
     })
 })
@@ -586,9 +523,7 @@ client.on('message', message => {
     .setImage(user.avatarURL)
     .addField("Game :", user.presence.game ? user.presence.game.name : "Game : none")
     .addField("Created at ", moment.utc(user.createdAt).format("MMMM Do YYYY, h:mm a"))
-    message.channel.send(embed).then(() => {
-            message.delete(100)
-        }); return
+    message.channel.send(embed); return
     }
     if(user) {
         let userinfo = new Discord.RichEmbed()
@@ -618,23 +553,61 @@ client.on('message', message => {
 }
 })
 client.on('message', message => { 
-if(message.author.bot) return;
- if(message.content.indexOf(config.prefix) !== 0) return;
-    const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-if(command === "say") {
-    // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
-    // To get the "message" itself we join the `args` back into a string with spaces: 
-    const sayMessage = args.join(" ");
-    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
-    message.delete().catch(O_o=>{}); 
-    // And we get the bot to say the thing: 
-        let embed = new Discord.RichEmbed()
-        .setColor(colors.yellow)
-        .setDescription(sayMessage)
-    message.channel.send(embed).then(()=> {
-    message.delete()
-})
-  }
-})
+    let permError = new Discord.RichEmbed()
+    .setTitle("Permissions error")
+    .setColor(colors.red)
+    .setDescription("You dont have permissions \`MANAGE_MESSAGES\` to use command!")
+    .setTimestamp()
+    if(message.author.bot) return; 
+     if(message.content.indexOf(config.prefix) !== 0) return;
+        const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+      const command = args.shift().toLowerCase();
+    if(command === "say") {
+        if(!message.guild) return
+        if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(permError).then(msg => {
+                message.delete()
+            })
+        const sayMessage = args.join(" ");
+        // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+        message.delete().catch(O_o=>{}); 
+        // And we get the bot to say the thing: 
+            let embed = new Discord.RichEmbed()
+            .setColor(colors.cyan)
+            .setDescription(sayMessage)
+            .setFooter(`${message.member.user.username}`)
+        message.channel.send(embed)
+      }
+    })
+    client.on('message', message => { 
+        if(message.author.bot) return;
+         if(message.content.indexOf(config.prefix) !== 0) return;
+            const args = message.content.slice(config.prefix.length).trim().split(/ +/g);
+          const command = args.shift().toLowerCase();
+        if(command === "vote") {
+        if(!message.guild) {
+            return
+        }   else {
+            let embedsdd = new Discord.RichEmbed()
+    .setColor(colors.red)
+    .setTitle("Permissions error")
+    .setDescription("You dont have permissions \`MANAGE_WEBHOOKS\` to do it!")
+    .setTimestamp()
+        if(!message.member.hasPermission("MANAGE_WEBHOOKS")) return message.channel.send(embedsdd).then(msg => {msg.delete(10000), message.delete(1000)})
+        const sayMessage = args.join(" ");
+            // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
+            message.delete().catch(O_o=>{}); 
+            // And we get the bot to say the thing: 
+                let embed = new Discord.RichEmbed()
+                .setColor(colors.cyan)
+                .setTitle("Vote")
+                .setDescription(sayMessage)
+                .setFooter(`${message.member.user.username}`)
+            message.channel.send(embed).then(async (msg) => {
+                await msg.react("👍");
+                await msg.react("🤷")
+                await msg.react("👎");
+                });
+          }
+        }
+        })
 client.login(process.env.token_bot);
